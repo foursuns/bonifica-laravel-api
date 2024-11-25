@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -44,7 +44,7 @@ class UserController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         try {
             $user = User::create([
@@ -66,10 +66,9 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, User $user)
     {
         try {
-            $user = User::find($id);
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -96,7 +95,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => "User deleted successfully",
-            ], 200);
+            ], 204);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => false,
