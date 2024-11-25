@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use App\Jobs\UserSendMailJob;
 
 class UserController extends Controller
 {
@@ -52,6 +53,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'message' => $request->message
             ]);
+            UserSendMailJob::dispatch($user->id)->onQueue('default');
             return response()->json([
                 'status' => true,
                 'message' => "User create successfully",
