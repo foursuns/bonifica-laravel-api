@@ -54,11 +54,7 @@ class UserController extends Controller
                 'message' => $request->message
             ]);
             UserSendMailJob::dispatch($user->id)->onQueue('default');
-            return response()->json([
-                'status' => true,
-                'message' => "User create successfully",
-                'data' => $user
-            ], 201);    
+            return response()->json($user, 201);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => false,
